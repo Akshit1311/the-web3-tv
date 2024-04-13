@@ -1,40 +1,34 @@
-import { Suspense } from "react";
-
-import { api } from "~/trpc/server";
-import { AuthShowcase } from "./_components/auth-showcase";
-import {
-  CreatePostForm,
-  PostCardSkeleton,
-  PostList,
-} from "./_components/posts";
+import Channel from "./_components/Channel";
+import Chat from "./_components/Chat";
+import Navbar from "./_components/Navbar";
 
 export const runtime = "edge";
 
 export default function HomePage() {
-  // You can await this here if you don't want to show Suspense fallback below
-  const posts = api.post.all();
-
   return (
-    <main className="container h-screen py-16">
-      <div className="flex flex-col items-center justify-center gap-4">
-        <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-          Create <span className="text-primary">T3</span> Turbo
-        </h1>
-        <AuthShowcase />
+    <main className="h-screen w-full px-4 pb-4 sm:px-8">
+      <div className="flex h-full flex-col items-center justify-start gap-4">
+        <Navbar />
 
-        <CreatePostForm />
-        <div className="w-full max-w-2xl overflow-y-scroll">
-          <Suspense
-            fallback={
-              <div className="flex w-full flex-col gap-4">
-                <PostCardSkeleton />
-                <PostCardSkeleton />
-                <PostCardSkeleton />
-              </div>
-            }
-          >
-            <PostList posts={posts} />
-          </Suspense>
+        <div className="flex h-fit w-full flex-1 flex-col gap-4  sm:flex-initial sm:flex-row">
+          <div className="w-auto">
+            <video
+              className="aspect-video w-full rounded-lg  "
+              autoPlay
+              muted
+              controls
+              src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+            />
+            <div className="sm:hidden">
+              <div className="my-2 text-2xl font-medium">Hi there mofo</div>
+              <Channel channelName="Sundeee" subs={10000} />
+            </div>
+          </div>
+          <Chat />
+        </div>
+        <div className="hidden w-full sm:block">
+          <div className="my-2 text-3xl font-medium">Hi there mofo</div>
+          <Channel channelName="Sundeee" subs={10000} />
         </div>
       </div>
     </main>

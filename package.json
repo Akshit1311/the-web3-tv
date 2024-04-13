@@ -21,7 +21,6 @@
     "ui-add": "pnpm -F ui ui-add"
   },
   "devDependencies": {
-    "@acme/prettier-config": "*",
     "@turbo/gen": "^1.13.2",
     "prettier": "^3.2.5",
     "turbo": "^1.13.2",

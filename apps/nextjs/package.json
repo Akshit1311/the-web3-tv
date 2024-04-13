@@ -29,7 +29,10 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "superjson": "2.2.1",
-    "zod": "^3.22.4"
+    "zod": "^3.22.4",
+    "@farcaster/auth-kit": "^0.2.1",
+    "viem": "^2.9.16",
+    "jotai": "^2.8.0"
   },
   "devDependencies": {
     "@acme/eslint-config": "*",

@@ -8,7 +8,7 @@ import { Toaster } from "@acme/ui/toast";
 
 import "~/app/globals.css";
 
-import Navbar from "./_components/Navbar";
+import Provider from "./_components/Provider/Provider";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -48,13 +48,15 @@ export default function RootLayout(props: { children: React.ReactNode }) {
           GeistMono.variable,
         )}
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {props.children}
-          <div className="absolute bottom-4 right-4">
-            <ThemeToggle />
-          </div>
-          <Toaster />
-        </ThemeProvider>
+        <Provider>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            {props.children}
+            <div className="absolute bottom-4 right-4">
+              <ThemeToggle />
+            </div>
+            <Toaster />
+          </ThemeProvider>
+        </Provider>
       </body>
     </html>
   );

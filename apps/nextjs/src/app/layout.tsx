@@ -9,6 +9,7 @@ import { Toaster } from "@acme/ui/toast";
 import "~/app/globals.css";
 
 import Provider from "./_components/Provider/Provider";
+import MaxWidthLayout from "./_layouts/MaxWidthLayout";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
@@ -50,7 +51,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
       >
         <Provider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            {props.children}
+            <MaxWidthLayout>{props.children}</MaxWidthLayout>
             <div className="absolute bottom-4 right-4">
               <ThemeToggle />
             </div>

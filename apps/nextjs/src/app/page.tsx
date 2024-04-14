@@ -1,9 +1,19 @@
-import Channel from "./_components/Channel";
-import Chat from "./_components/Chat";
+import { Suspense } from "react";
+
+import ChannelStrip from "./_components/ChannelStrip/ChannelStrip";
+import ChannelStripSkeleton from "./_components/ChannelStrip/ChannelStripSkeleton";
 import Navbar from "./_components/Navbar";
 
-export const runtime = "edge";
+function HomePage() {
+  return (
+    <div className="flex h-full flex-col items-center justify-start gap-4">
+      <Navbar />
 
-export default function HomePage() {
-  return <section>Test</section>;
+      <Suspense fallback={<ChannelStripSkeleton />}>
+        <ChannelStrip />
+      </Suspense>
+    </div>
+  );
 }
+
+export default HomePage;

@@ -2,12 +2,10 @@ import React from "react";
 
 import Chat from "../Chat";
 
-interface CreatorChatProps {}
-
-const CreatorChat: React.FC<CreatorChatProps> = () => {
+const CreatorChat: React.FC = () => {
   return (
     <div className="w-96">
-      <Chat className="h-[calc(90vh-2.5rem)]" />
+      <Chat className="h-[calc(80vh)]" />
     </div>
   );
 };

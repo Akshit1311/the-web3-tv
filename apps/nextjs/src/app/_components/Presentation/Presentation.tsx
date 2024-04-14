@@ -32,7 +32,7 @@ const Presentation: React.FC<Props> = ({ id }) => {
 
         <div className="flex h-fit w-full flex-1 flex-col gap-4  sm:flex-initial sm:flex-row">
           <VideoEle stream={stream} />
-          <Chat className="h-[calc(90vh-2rem)]" />
+          <Chat className="h-[calc(50vh)]" />
         </div>
         <div className="hidden w-full sm:block">
           <div className="my-2 text-3xl font-medium">Hi there mofo</div>

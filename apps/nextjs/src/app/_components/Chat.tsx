@@ -39,13 +39,16 @@ const Chat: React.FC<ChatProps> = ({ className }) => {
   return (
     <form
       className={cn(
-        "w-full flex-1 rounded-lg border border-zinc-600  sm:w-96 sm:min-w-96 sm:max-w-96 sm:flex-auto",
+        "relative w-full flex-1 rounded-sm border  border-zinc-600 sm:w-96 sm:min-w-96 sm:max-w-96 sm:flex-auto",
         className,
       )}
       onSubmit={handleSend}
     >
-      <div className="h-[93%] overflow-y-auto p-2">
-        {messages.map(({ message, sender }) =>
+      <div className="h-full overflow-y-auto p-2">
+        {Array.from({ length: 100 }).map((_, i) => (
+          <div>{i}</div>
+        ))}
+        {/* {messages.map(({ message, sender }) =>
           sender === peerId ? (
             <div className="flex w-fit flex-col items-end rounded-lg bg-red-500 p-1.5 text-sm">
               {message}
@@ -56,14 +59,15 @@ const Chat: React.FC<ChatProps> = ({ className }) => {
               <div>{sender}</div>
             </div>
           ),
-        )}
+        )} */}
       </div>
 
-      <div className="mt-2 flex items-center gap-2 border border-t p-2">
+      <div className=" mt-2 flex w-full items-center gap-2 rounded-md border p-2 backdrop-blur-md">
         <input
+          value={text}
           type="text"
           placeholder="Enter you text"
-          className="w-full rounded-sm p-2"
+          className="w-full  bg-transparent p-2 focus:outline-none"
           onChange={(e) => setText(e.target.value)}
         />
         <button type="submit" className="">

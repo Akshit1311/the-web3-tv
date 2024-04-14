@@ -14,7 +14,7 @@ const Navbar = () => {
   } = useProfile();
 
   return (
-    <div className="h-50 relative mt-4 flex w-full  items-center justify-between">
+    <div className="h-50 sticky top-0 flex w-full items-center justify-between pt-4">
       <Image
         src="/logo.png"
         alt="Logo"

@@ -37,7 +37,6 @@ const VideoEle: React.FC<VideoEleProps> = ({ stream }) => {
         ref={videoRef}
         className="aspect-video w-full rounded-lg"
         autoPlay
-        muted
       />
       <div className="sm:hidden">
         <div className="my-2 text-2xl font-medium">Hi there mofo</div>

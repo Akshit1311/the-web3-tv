@@ -8,7 +8,11 @@ import Chat from "../Chat";
 import VideoEle from "../Common/VideoEle";
 import Navbar from "../Navbar";
 
-const Presentation: React.FC = () => {
+interface Props {
+  id: string;
+}
+
+const Presentation: React.FC<Props> = ({ id }) => {
   const { stream, enableVideo } = useLocalVideo();
 
   useEffect(() => {
@@ -23,6 +27,8 @@ const Presentation: React.FC = () => {
     <main className="h-screen w-full px-4 pb-4 sm:px-8">
       <div className="flex h-full flex-col items-center justify-start gap-4">
         <Navbar />
+
+        {id}
 
         <div className="flex h-fit w-full flex-1 flex-col gap-4  sm:flex-initial sm:flex-row">
           <VideoEle stream={stream} />

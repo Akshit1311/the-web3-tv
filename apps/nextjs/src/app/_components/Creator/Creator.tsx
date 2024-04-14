@@ -4,6 +4,7 @@ import React, { Suspense, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import { useProfile } from "@farcaster/auth-kit";
 import { useLocalVideo } from "@huddle01/react/hooks";
+import { z } from "zod";
 
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
@@ -14,21 +15,29 @@ import CreatorChat from "./CreatorChat";
 
 const EditModal = dynamic(() => import("./EditModal"));
 
-export interface TStreamType {
-  title?: string;
-  desc: string;
-  isModalOpen: boolean;
-}
+const streamSchema = z.object({
+  title: z.string().optional(),
+  desc: z.string(),
+  isModalOpen: z.boolean(),
+  streamKey: z.string(),
+  streamUrl: z.string(),
+  isOpen: z.boolean(),
+});
+
+export type TStreamType = z.infer<typeof streamSchema>;
 
 const Creator: React.FC = () => {
   const {
     profile: { displayName },
   } = useProfile();
 
-  const streamMap = {
+  const streamMap: TStreamType = {
     title: displayName ?? "Harry",
     desc: "",
     isModalOpen: false,
+    streamKey: "qh69-4azq-g1y0-jb2z-a10m",
+    streamUrl: "",
+    isOpen: false,
   };
 
   const [streamData, setStreamData] = useState<TStreamType>(streamMap);
@@ -150,9 +159,51 @@ const Creator: React.FC = () => {
               Edit
             </Button>
           </div>
-          <div className=" bg-default-1 mt-4">
-            <div className="p-4 text-sm font-medium text-blue-500">
+          <div className=" bg-default-1 mt-4 p-4">
+            <div className=" text-sm font-medium text-blue-500">
               Stream Settings
+            </div>
+
+            <div className="mt-4">
+              <div className="text-sm font-medium text-gray-400">
+                Stream Key
+              </div>
+
+              <div>
+                <input
+                  id="pass"
+                  value={streamData.streamKey}
+                  type={streamData.isOpen ? "text" : "password"}
+                  name="streamKey"
+                  className="w-1/2 border-b border-white bg-transparent p-1 text-sm font-normal text-white focus:outline-none"
+                />
+
+                <button
+                  type="button"
+                  className="-ml-6"
+                  onClick={() => {
+                    setStreamData((prev) => ({
+                      ...prev,
+                      isOpen: !prev.isOpen,
+                    }));
+                  }}
+                >
+                  eye
+                </button>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <div className="text-sm font-medium text-gray-400">
+                Stream URL
+              </div>
+              <input
+                value={streamData.streamUrl}
+                type="text"
+                name="streamUrl"
+                className="w-1/2 border-b border-white bg-transparent p-1 text-sm font-normal text-white focus:outline-none"
+                placeholder="rtmp://a.rtmp.youtube.com/live2"
+              />
             </div>
           </div>
         </div>

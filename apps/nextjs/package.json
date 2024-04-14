@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@acme/api": "*",
-    "@acme/auth": "*",
     "@acme/db": "*",
     "@acme/ui": "*",
     "@acme/validators": "*",

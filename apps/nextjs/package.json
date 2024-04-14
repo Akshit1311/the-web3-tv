@@ -14,7 +14,6 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "@acme/api": "*",
     "@acme/db": "*",
     "@acme/ui": "*",
     "@acme/validators": "*",

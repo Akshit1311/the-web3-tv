@@ -24,15 +24,19 @@ const Navbar = () => {
       />
       {/* <Image src="/logo.png" alt="Logo" height={933} width={2000} /> */}
 
-      {isAuthenticated ? (
-        <div>{displayName}</div>
-      ) : (
-        <SignInButton
-          onSuccess={({ displayName, bio, fid }) => {
-            console.log(displayName, bio, fid);
-          }}
-        />
-      )}
+      <div className="flex items-center gap-4">
+        {isAuthenticated ? (
+          <div>{displayName}</div>
+        ) : (
+          <SignInButton
+            onSuccess={({ displayName, bio, fid }) => {
+              console.log(displayName, bio, fid);
+            }}
+          />
+        )}
+
+        {window.location.pathname === "/creator" ? <div>test</div> : null}
+      </div>
     </div>
   );
 };

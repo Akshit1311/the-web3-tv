@@ -3,12 +3,18 @@
 import React, { useState } from "react";
 import { useDataMessage, useLocalPeer } from "@huddle01/react/hooks";
 
+import { cn } from "@acme/ui";
+
 export interface TMessageType {
   message: string;
   sender: string;
 }
 
-const Chat = () => {
+interface ChatProps {
+  className: string;
+}
+
+const Chat: React.FC<ChatProps> = ({ className }) => {
   const { peerId } = useLocalPeer();
   const [text, setText] = useState<string>("");
   const [messages, setMessages] = useState<TMessageType[]>([]);
@@ -32,10 +38,13 @@ const Chat = () => {
 
   return (
     <form
-      className="h-[32rem] w-full flex-1  rounded-lg border border-zinc-600 p-2 sm:w-96 sm:min-w-96 sm:max-w-96 sm:flex-auto"
+      className={cn(
+        "w-full flex-1 rounded-lg border border-zinc-600  sm:w-96 sm:min-w-96 sm:max-w-96 sm:flex-auto",
+        className,
+      )}
       onSubmit={handleSend}
     >
-      <div className="h-[90%] overflow-y-auto border">
+      <div className="h-[93%] overflow-y-auto p-2">
         {messages.map(({ message, sender }) =>
           sender === peerId ? (
             <div className="flex w-fit flex-col items-end rounded-lg bg-red-500 p-1.5 text-sm">
@@ -50,7 +59,7 @@ const Chat = () => {
         )}
       </div>
 
-      <div className="mt-2 flex items-center gap-2">
+      <div className="mt-2 flex items-center gap-2 border border-t px-2 pt-3">
         <input
           type="text"
           placeholder="Enter you text"

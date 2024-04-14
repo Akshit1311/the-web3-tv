@@ -1,23 +1,37 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { Suspense, useCallback, useState } from "react";
+import dynamic from "next/dynamic";
 import { useProfile } from "@farcaster/auth-kit";
 import { useLocalVideo } from "@huddle01/react/hooks";
 
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 
-import Chat from "../Chat";
 import VideoEle from "../Common/VideoEle";
 import Navbar from "../Navbar";
 import CreatorChat from "./CreatorChat";
 
-interface CreatprProps {}
+const EditModal = dynamic(() => import("./EditModal"));
 
-const Creator: React.FC<CreatprProps> = () => {
+export interface TStreamType {
+  title?: string;
+  desc: string;
+  isModalOpen: boolean;
+}
+
+const Creator: React.FC = () => {
   const {
     profile: { displayName },
   } = useProfile();
+
+  const streamMap = {
+    title: displayName ?? "Harry",
+    desc: "",
+    isModalOpen: false,
+  };
+
+  const [streamData, setStreamData] = useState<TStreamType>(streamMap);
 
   const { stream, enableVideo, disableVideo, isVideoOn } = useLocalVideo();
 
@@ -32,6 +46,30 @@ const Creator: React.FC<CreatprProps> = () => {
     await disableVideo().catch((err) => {
       console.error({ err });
     });
+  };
+
+  const handleOnChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    const { name, value } = e.target;
+
+    setStreamData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleOnClose = useCallback(() => {
+    setStreamData((prev) => ({
+      ...prev,
+      isModalOpen: false,
+    }));
+  }, [streamData]);
+
+  const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log({ streamData });
+    setStreamData(streamMap);
   };
 
   return (
@@ -86,7 +124,7 @@ const Creator: React.FC<CreatprProps> = () => {
               <TitleStrip
                 className="mt-4"
                 title="Title"
-                subtitle={`${displayName} Live Stream`}
+                subtitle={`${streamData.title} Live Stream`}
               />
 
               <TitleStrip
@@ -99,6 +137,12 @@ const Creator: React.FC<CreatprProps> = () => {
             </div>
 
             <Button
+              onClick={() => {
+                setStreamData((prev) => ({
+                  ...prev,
+                  isModalOpen: true,
+                }));
+              }}
               type="button"
               variant="outline"
               className="absolute right-4 top-4"
@@ -115,6 +159,17 @@ const Creator: React.FC<CreatprProps> = () => {
 
         <CreatorChat />
       </div>
+
+      {streamData.isModalOpen ? (
+        <Suspense fallback={"...loading"}>
+          <EditModal
+            onSave={handleSave}
+            streamData={streamData}
+            onChange={handleOnChange}
+            onClose={handleOnClose}
+          />
+        </Suspense>
+      ) : null}
     </section>
   );
 };

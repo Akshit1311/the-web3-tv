@@ -32,7 +32,8 @@
     "zod": "^3.22.4",
     "@farcaster/auth-kit": "^0.2.1",
     "viem": "^2.9.16",
-    "jotai": "^2.8.0"
+    "jotai": "^2.8.0",
+    "@huddle01/react": "^2.0.8"
   },
   "devDependencies": {
     "@acme/eslint-config": "*",

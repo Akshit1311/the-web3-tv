@@ -32,6 +32,8 @@
     "react-dom": "18.2.0",
     "superjson": "2.2.1",
     "viem": "^2.9.16",
+    "jotai": "^2.8.0",
+    "@huddle01/react": "^2.0.8",
     "zod": "^3.22.4"
   },
   "devDependencies": {

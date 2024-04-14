@@ -59,11 +59,11 @@ const Chat: React.FC<ChatProps> = ({ className }) => {
         )}
       </div>
 
-      <div className="mt-2 flex items-center gap-2 border border-t px-2 pt-3">
+      <div className="mt-2 flex items-center gap-2 border border-t p-2">
         <input
           type="text"
           placeholder="Enter you text"
-          className="w-full p-2"
+          className="w-full rounded-sm p-2"
           onChange={(e) => setText(e.target.value)}
         />
         <button type="submit" className="">

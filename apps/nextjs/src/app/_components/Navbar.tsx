@@ -34,8 +34,6 @@ const Navbar = () => {
             }}
           />
         )}
-
-        {window.location.pathname === "/creator" ? <div>test</div> : null}
       </div>
     </div>
   );

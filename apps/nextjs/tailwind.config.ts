@@ -10,6 +10,11 @@ export default {
   presets: [baseConfig],
   theme: {
     extend: {
+      colors: {
+        default: {
+          1: "#1f1f1f",
+        },
+      },
       fontFamily: {
         sans: ["var(--font-geist-sans)", ...fontFamily.sans],
         mono: ["var(--font-geist-mono)", ...fontFamily.mono],

@@ -3,7 +3,7 @@
 import React, { Suspense, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import { useProfile } from "@farcaster/auth-kit";
-import { useLocalVideo } from "@huddle01/react/hooks";
+import { useLocalVideo, useRoom } from "@huddle01/react/hooks";
 import { z } from "zod";
 
 import { cn } from "@acme/ui";
@@ -26,10 +26,16 @@ const streamSchema = z.object({
 
 export type TStreamType = z.infer<typeof streamSchema>;
 
-const Creator: React.FC = () => {
+interface Props {
+  roomId: string;
+}
+
+const Creator: React.FC<Props> = ({ roomId }) => {
   const {
     profile: { displayName },
   } = useProfile();
+
+  console.log({ roomId });
 
   const streamMap: TStreamType = {
     title: displayName ?? "Harry",
@@ -44,6 +50,8 @@ const Creator: React.FC = () => {
 
   const { stream, enableVideo, disableVideo, isVideoOn } = useLocalVideo();
 
+  const { joinRoom } = useRoom();
+
   // Handlers
   const handleEnableVideo = async () => {
     await enableVideo().catch((error) => {
@@ -55,6 +63,12 @@ const Creator: React.FC = () => {
     await disableVideo().catch((err) => {
       console.error({ err });
     });
+  };
+
+  const getToken = async () => {
+    const resp = await fetch(`api?roomId=${roomId}`);
+    const token = await resp.text();
+    return token;
   };
 
   const handleOnChange = (
@@ -79,6 +93,15 @@ const Creator: React.FC = () => {
     e.preventDefault();
     console.log({ streamData });
     setStreamData(streamMap);
+  };
+
+  const handleJoinRoom = async () => {
+    const token = await getToken();
+    console.log({ token, roomId });
+    // await joinRoom({
+    //   roomId,
+    //   token,
+    // });
   };
 
   return (
@@ -123,9 +146,9 @@ const Creator: React.FC = () => {
                 <Button
                   type="button"
                   variant="outline"
-                  onClick={() => alert("todo")}
+                  onClick={handleJoinRoom}
                 >
-                  Livestream
+                  Start Livestream
                 </Button>
               </div>
             </div>

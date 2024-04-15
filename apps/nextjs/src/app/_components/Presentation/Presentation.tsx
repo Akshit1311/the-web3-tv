@@ -1,27 +1,19 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { useLocalVideo } from "@huddle01/react/hooks";
+import React from "react";
+import { usePeerIds } from "@huddle01/react/hooks";
 
 import Channel from "../Channel";
 import Chat from "../Chat";
-import VideoEle from "../Common/VideoEle";
 import Navbar from "../Navbar";
+import RemoteView from "./RemoteView";
 
 interface Props {
   id: string;
 }
 
 const Presentation: React.FC<Props> = ({ id }) => {
-  const { stream, enableVideo } = useLocalVideo();
-
-  useEffect(() => {
-    (async () => {
-      await enableVideo().catch((error) => {
-        console.error({ error });
-      });
-    })();
-  }, []);
+  const { peerIds } = usePeerIds();
 
   return (
     <main className="h-screen w-full px-4 pb-4 sm:px-8">
@@ -31,7 +23,9 @@ const Presentation: React.FC<Props> = ({ id }) => {
         {id}
 
         <div className="flex h-fit w-full flex-1 flex-col gap-4  sm:flex-initial sm:flex-row">
-          <VideoEle stream={stream} />
+          {peerIds.map((id) => (
+            <RemoteView key={`remote-peer-${id}`} id={id} />
+          ))}
           <Chat className="h-[calc(50vh)]" />
         </div>
         <div className="hidden w-full sm:block">

@@ -10,8 +10,8 @@ import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 
 import { getToken } from "~/app/_actions";
+import Navbar from "../../Navbar/Navbar";
 import VideoEle from "../Common/VideoEle";
-import Navbar from "../Navbar";
 import CreatorChat from "./CreatorChat";
 
 const EditModal = dynamic(() => import("./EditModal"));

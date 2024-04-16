@@ -1,19 +1,21 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { useRoom } from "@huddle01/react/hooks";
 
 import type { ILiveMeeting } from "~/app/_actions";
-import { getLiveMeetings, getToken } from "~/app/_actions";
+import { getToken } from "~/app/_actions";
+import Navbar from "../../Navbar/Navbar";
 import ChannelStrip from "../ChannelStrip/ChannelStrip";
 import ChannelStripSkeleton from "../ChannelStrip/ChannelStripSkeleton";
-import Navbar from "../Navbar";
 import VideoContent from "../VideoContent/VideoContent";
 
-const Home: React.FC = () => {
-  const [meetingsData, setMeetingsData] = useState<ILiveMeeting[]>();
+interface HomeProps {
+  liveMeetings: ILiveMeeting[];
+}
 
+const Home: React.FC<HomeProps> = ({ liveMeetings }) => {
   const { joinRoom } = useRoom();
 
   const router = useRouter();
@@ -37,14 +39,7 @@ const Home: React.FC = () => {
       });
   };
 
-  useEffect(() => {
-    void (async () => {
-      const liveMeetings = await getLiveMeetings();
-      setMeetingsData(liveMeetings);
-    })();
-  }, []);
-
-  console.log({ meetingsData });
+  console.log({ liveMeetings });
 
   return (
     <div className="flex h-full flex-col items-center justify-start gap-4">
@@ -59,7 +54,7 @@ const Home: React.FC = () => {
           <VideoContent key={i} onClick={() => alert("todo")} />
         ))}
 
-        {/* {meetingsData?.map(({ roomId, title }, i) => (
+        {/* {liveMeetings?.map(({ roomId, title }, i) => (
           <VideoContent key={i} onClick={() => handleJoinStream(roomId)} />
         ))} */}
       </div>

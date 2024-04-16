@@ -3,9 +3,9 @@
 import React from "react";
 import { usePeerIds } from "@huddle01/react/hooks";
 
+import Navbar from "../../Navbar/Navbar";
 import Channel from "../Channel";
 import Chat from "../Chat";
-import Navbar from "../Navbar";
 import RemoteView from "./RemoteView";
 
 interface Props {

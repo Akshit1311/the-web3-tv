@@ -26,6 +26,7 @@ const ChannelStrip = async () => {
       {channels.map((channel) => (
         <div
           id={channel.id}
+          key={channel.id}
           className="w-fit cursor-pointer snap-center text-nowrap rounded-md bg-zinc-800 px-3 py-1 text-sm font-medium text-zinc-300"
         >
           {channel.id}

@@ -7,6 +7,8 @@ import "@farcaster/auth-kit/styles.css";
 
 import { SignInButton, useProfile } from "@farcaster/auth-kit";
 
+import GoLiveDropDown from "../Dropdowns/GoLiveDropDown";
+
 const Navbar = () => {
   const {
     isAuthenticated,
@@ -22,9 +24,10 @@ const Navbar = () => {
         width={107.2}
         className="rounded-lg"
       />
-      {/* <Image src="/logo.png" alt="Logo" height={933} width={2000} /> */}
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-8">
+        <GoLiveDropDown />
+
         {isAuthenticated ? (
           <div>{displayName}</div>
         ) : (

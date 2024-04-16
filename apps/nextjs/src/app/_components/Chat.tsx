@@ -46,7 +46,7 @@ const Chat: React.FC<ChatProps> = ({ className }) => {
     >
       <div className="h-full overflow-y-auto p-2">
         {Array.from({ length: 100 }).map((_, i) => (
-          <div>{i}</div>
+          <div key={i}>{i}</div>
         ))}
         {/* {messages.map(({ message, sender }) =>
           sender === peerId ? (

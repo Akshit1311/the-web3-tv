@@ -1,7 +1,6 @@
 "use server";
 
 import React from "react";
-import { API } from "@huddle01/server-sdk/api";
 
 import Creator from "../_components/Creator/Creator";
 

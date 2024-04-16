@@ -7,6 +7,7 @@ const ChannelStripSkeleton = () => {
     <div className=" flex w-full gap-2 overflow-x-hidden ">
       {Array.from({ length: 50 }).map((_, i) => (
         <Skeleton
+          key={i}
           id={i.toString()}
           className="w-fit cursor-pointer snap-center text-nowrap rounded-md bg-zinc-800 px-3 py-1 text-sm font-medium text-zinc-300"
         >

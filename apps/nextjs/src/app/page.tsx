@@ -1,26 +1,38 @@
-import { Suspense } from "react";
+"use server";
 
-import ChannelStrip from "./_components/ChannelStrip/ChannelStrip";
-import ChannelStripSkeleton from "./_components/ChannelStrip/ChannelStripSkeleton";
-import Navbar from "./_components/Navbar";
-import VideoContent from "./_components/VideoContent/VideoContent";
+import Home from "./_components/Home/Home";
 
-function HomePage() {
-  return (
-    <div className="flex h-full flex-col items-center justify-start gap-4">
-      <Navbar />
+export interface ILiveMeeting {
+  title: string;
+  roomId: string;
+}
 
-      <Suspense fallback={<ChannelStripSkeleton />}>
-        <ChannelStrip />
-      </Suspense>
+export interface IData {
+  liveMeetings: ILiveMeeting[];
+}
 
-      <div className="flex w-full flex-wrap gap-3 overflow-y-auto px-2 sm:grid sm:grid-cols-4 sm:justify-between">
-        {Array.from({ length: 12 }).map((_, i) => (
-          <VideoContent key={i} />
-        ))}
-      </div>
-    </div>
-  );
+const getLiveMeetigs = async () => {
+  const resp = await fetch("https://api.huddle01.com/api/v1/live-meetings", {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+      "x-api-key": process.env.API_KEY ?? "",
+    },
+    cache: "no-cache",
+  });
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const data: IData = await resp.json();
+
+  const { liveMeetings } = data;
+
+  return liveMeetings;
+};
+
+async function HomePage() {
+  const liveMeetings = await getLiveMeetigs();
+
+  return <Home data={liveMeetings} />;
 }
 
 export default HomePage;

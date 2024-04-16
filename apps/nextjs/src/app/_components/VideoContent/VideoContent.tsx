@@ -2,9 +2,17 @@ import React from "react";
 
 import { Skeleton } from "@acme/ui/skeleton";
 
-const VideoContent = () => {
+interface VideoContentProps {
+  onClick: () => void;
+}
+
+const VideoContent: React.FC<VideoContentProps> = ({ onClick }) => {
   return (
-    <div className="w-full">
+    <div
+      className="w-full cursor-pointer"
+      role="presentation"
+      onClick={onClick}
+    >
       <Skeleton className="aspect-video bg-zinc-800" />
       <div className="my-2 flex gap-1">
         <Skeleton className="aspect-square h-12 rounded-full bg-zinc-800" />

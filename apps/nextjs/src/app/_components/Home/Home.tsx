@@ -1,17 +1,26 @@
-import React, { Suspense } from "react";
+"use client";
 
-import type { ILiveMeeting } from "~/app/page";
+import React, { Suspense, useEffect, useState } from "react";
+
+import type { ILiveMeeting } from "~/app/_actions";
+import { getLiveMeetings } from "~/app/_actions";
 import ChannelStrip from "../ChannelStrip/ChannelStrip";
 import ChannelStripSkeleton from "../ChannelStrip/ChannelStripSkeleton";
 import Navbar from "../Navbar";
 import VideoContent from "../VideoContent/VideoContent";
 
-interface HomeProps {
-  data: ILiveMeeting[];
-}
+const Home: React.FC = () => {
+  const [meetingsData, setMeetingsData] = useState<ILiveMeeting[]>();
 
-const Home: React.FC<HomeProps> = ({ data }) => {
-  console.log({ data });
+  useEffect(() => {
+    void (async () => {
+      const liveMeetings = await getLiveMeetings();
+      setMeetingsData(liveMeetings);
+    })();
+  }, []);
+
+  console.log(meetingsData);
+
   return (
     <div className="flex h-full flex-col items-center justify-start gap-4">
       <Navbar />

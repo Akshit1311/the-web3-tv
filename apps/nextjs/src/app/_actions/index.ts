@@ -12,11 +12,20 @@ const tokenSchema = z.object({
   role: z.enum(["host", "guest"]),
 });
 
-interface RoomDetails {
+export interface RoomDetails {
   message: string;
   data: {
     roomId: string;
   };
+}
+
+export interface ILiveMeeting {
+  title: string;
+  roomId: string;
+}
+
+export interface ILiveMeetingData {
+  liveMeetings: ILiveMeeting[];
 }
 
 export const getToken = action(tokenSchema, async ({ roomId, role }) => {
@@ -66,3 +75,21 @@ export const getToken = action(tokenSchema, async ({ roomId, role }) => {
   const token = await accessToken.toJwt();
   return { token, roomId: finalRoomId };
 });
+
+export const getLiveMeetings = async () => {
+  // revalidatePath("/");
+  const resp = await fetch("https://api.huddle01.com/api/v1/live-meetings", {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+      "x-api-key": process.env.API_KEY ?? "",
+    },
+    cache: "no-cache",
+  });
+
+  const data = (await resp.json()) as ILiveMeetingData;
+
+  const liveMeetings = data.liveMeetings;
+
+  return liveMeetings;
+};

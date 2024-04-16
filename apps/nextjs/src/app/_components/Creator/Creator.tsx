@@ -9,6 +9,7 @@ import { z } from "zod";
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 
+import { getToken } from "~/app/_actions";
 import VideoEle from "../Common/VideoEle";
 import Navbar from "../Navbar";
 import CreatorChat from "./CreatorChat";
@@ -26,16 +27,10 @@ const streamSchema = z.object({
 
 export type TStreamType = z.infer<typeof streamSchema>;
 
-interface Props {
-  roomId: string;
-}
-
-const Creator: React.FC<Props> = ({ roomId }) => {
+const Creator: React.FC = () => {
   const {
     profile: { displayName },
   } = useProfile();
-
-  console.log({ roomId });
 
   const streamMap: TStreamType = {
     title: displayName ?? "Harry",
@@ -65,12 +60,6 @@ const Creator: React.FC<Props> = ({ roomId }) => {
     });
   };
 
-  const getToken = async () => {
-    const resp = await fetch(`api?roomId=${roomId}`);
-    const token = await resp.text();
-    return token;
-  };
-
   const handleOnChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -96,8 +85,13 @@ const Creator: React.FC<Props> = ({ roomId }) => {
   };
 
   const handleJoinRoom = async () => {
-    const token = await getToken();
-    console.log({ token, roomId });
+    const { data } = await getToken({ role: "host" });
+
+    if (!data) {
+      throw new Error("Token creation failed");
+    }
+
+    console.log(data);
     // await joinRoom({
     //   roomId,
     //   token,

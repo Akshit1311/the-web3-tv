@@ -42,7 +42,7 @@ const Home: React.FC = () => {
       const liveMeetings = await getLiveMeetings();
       setMeetingsData(liveMeetings);
     })();
-  }, [  ]);
+  }, []);
 
   console.log({ meetingsData });
 

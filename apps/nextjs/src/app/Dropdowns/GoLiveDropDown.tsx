@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 import {
@@ -16,10 +17,14 @@ const GoLiveDropDown: React.FC = () => {
   const router = useRouter();
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <div role="presentation" className="cursor-pointer">
-          {icons.camera}
-        </div>
+      <DropdownMenuTrigger asChild className="select-none">
+        <Image
+          src="/images/Navbar/Camera.png"
+          alt="camera"
+          width={44}
+          height={44}
+          className="cursor-pointer object-contain"
+        />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent>

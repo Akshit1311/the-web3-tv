@@ -25,7 +25,7 @@ const Navbar = () => {
         className="rounded-lg"
       />
 
-      <div className="flex items-center gap-8">
+      <div className="flex items-center gap-4">
         <GoLiveDropDown />
 
         {isAuthenticated ? (

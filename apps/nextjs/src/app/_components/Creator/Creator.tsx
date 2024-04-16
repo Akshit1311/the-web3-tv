@@ -11,6 +11,7 @@ import { Button } from "@acme/ui/button";
 
 import { getToken } from "~/app/_actions";
 import Navbar from "../../Navbar/Navbar";
+import Loader from "../Common/Loader";
 import VideoEle from "../Common/VideoEle";
 import CreatorChat from "./CreatorChat";
 
@@ -109,15 +110,7 @@ const Creator: React.FC = () => {
               {isVideoOn ? (
                 <VideoEle stream={stream} />
               ) : (
-                <div className="flex h-[17.4rem] w-full flex-col items-center justify-center gap-y-2 bg-black">
-                  <div
-                    className="text-surface inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
-                    role="status"
-                  />
-                  <div className="max-w-48 text-center text-sm font-medium text-white">
-                    Start Streaming by clicking the Video on button
-                  </div>
-                </div>
+                <Loader text="  Start Streaming by clicking the Video on button" />
               )}
 
               <div className="my-2 flex items-center justify-center gap-2">

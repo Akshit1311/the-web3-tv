@@ -5,6 +5,8 @@ import { useDataMessage, useLocalPeer } from "@huddle01/react/hooks";
 
 import { cn } from "@acme/ui";
 
+import icons from "../_assets/icons";
+
 export interface TMessageType {
   message: string;
   sender: string;
@@ -12,9 +14,10 @@ export interface TMessageType {
 
 interface ChatProps {
   className: string;
+  innerHeight: string;
 }
 
-const Chat: React.FC<ChatProps> = ({ className }) => {
+const Chat: React.FC<ChatProps> = ({ className, innerHeight }) => {
   const { peerId } = useLocalPeer();
   const [text, setText] = useState<string>("");
   const [messages, setMessages] = useState<TMessageType[]>([]);
@@ -44,9 +47,25 @@ const Chat: React.FC<ChatProps> = ({ className }) => {
       )}
       onSubmit={handleSend}
     >
-      <div className="h-full overflow-y-auto p-2">
+      <div className="flex items-center justify-center gap-2 border-b p-4 text-base font-semibold">
+        <div>{icons.chat}</div>
+        <div>Top Chats</div>
+      </div>
+      <div
+        className={cn(
+          "break-after-all overflow-y-auto overflow-x-hidden break-all p-2",
+          innerHeight,
+        )}
+      >
         {Array.from({ length: 100 }).map((_, i) => (
-          <div key={i}>{i}</div>
+          <div className="ml-auto flex flex-col justify-end text-sm font-normal">
+            <div className="text-right text-gray-500">
+              {"message message message message"}
+            </div>
+            <div className="text-right font-semibold text-gray-300/80">
+              {"sender"}
+            </div>
+          </div>
         ))}
         {/* {messages.map(({ message, sender }) =>
           sender === peerId ? (
@@ -62,16 +81,16 @@ const Chat: React.FC<ChatProps> = ({ className }) => {
         )} */}
       </div>
 
-      <div className=" mt-2 flex w-full items-center gap-2 rounded-md border p-2 backdrop-blur-md">
+      <div className="mt-2 flex w-full items-center gap-2  border-t p-1.5 backdrop-blur-md">
         <input
           value={text}
           type="text"
           placeholder="Enter you text"
-          className="w-full  bg-transparent p-2 focus:outline-none"
+          className="w-full  bg-transparent  text-sm font-normal placeholder:text-gray-700 focus:outline-none"
           onChange={(e) => setText(e.target.value)}
         />
         <button type="submit" className="">
-          enter
+          {icons.enterIcon}
         </button>
       </div>
     </form>

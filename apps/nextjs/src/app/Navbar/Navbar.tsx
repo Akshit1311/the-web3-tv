@@ -5,9 +5,9 @@ import Image from "next/image";
 
 import "@farcaster/auth-kit/styles.css";
 
+import { useRouter } from "next/navigation";
 import { SignInButton, useProfile } from "@farcaster/auth-kit";
 
-import icons from "../_assets/icons";
 import GoLiveDropDown from "../Dropdowns/GoLiveDropDown";
 
 const Navbar = () => {
@@ -16,6 +16,8 @@ const Navbar = () => {
     profile: { displayName },
   } = useProfile();
 
+  const router = useRouter();
+
   return (
     <div className="h-50 sticky top-0 flex w-full items-center justify-between border-b pb-3 pt-4">
       <Image
@@ -23,7 +25,8 @@ const Navbar = () => {
         alt="Logo"
         height={50}
         width={107.2}
-        className="rounded-lg"
+        className="cursor-pointer rounded-lg"
+        onClick={() => router.push("/")}
       />
 
       <div className="flex items-center gap-4">

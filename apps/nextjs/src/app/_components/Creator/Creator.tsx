@@ -9,7 +9,8 @@ import { z } from "zod";
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 
-import { getToken } from "~/app/_actions";
+import { genTokenforRecording, getToken } from "~/app/_actions";
+import { startRecording } from "~/app/_recorder";
 import Navbar from "../../Navbar/Navbar";
 import Loader from "../Common/Loader";
 import VideoEle from "../Common/VideoEle";
@@ -92,8 +93,17 @@ const Creator: React.FC = () => {
       throw new Error("Token creation failed");
     }
 
+    const { data: recData } = await genTokenforRecording({
+      roomId: data?.roomId,
+    });
+
     console.log(data);
     // await joinRoom({
+    //   roomId,
+    //   token,
+    // });
+
+    // await startRecording({
     //   roomId,
     //   token,
     // });

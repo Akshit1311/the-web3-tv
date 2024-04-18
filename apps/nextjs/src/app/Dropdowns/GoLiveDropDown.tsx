@@ -28,14 +28,23 @@ const GoLiveDropDown: React.FC = () => {
       </DropdownMenuTrigger>
 
       <DropdownMenuContent>
-        <DropdownMenuItem>
+        <DropdownMenuItem className=" flex flex-col items-center gap-y-4">
           <div
             className="flex cursor-pointer items-center gap-2"
             role="presentation"
             onClick={() => router.push("/creator")}
           >
             <div>{icons.wifi}</div>
-            <div>Start streaming</div>
+            <div>Start stream</div>
+          </div>
+
+          <div
+            className="flex cursor-pointer items-center gap-2"
+            role="presentation"
+            onClick={() => router.push("/streams")}
+          >
+            <div>{icons.record}</div>
+            <div>view streams</div>
           </div>
         </DropdownMenuItem>
       </DropdownMenuContent>

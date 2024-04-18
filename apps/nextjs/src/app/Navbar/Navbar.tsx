@@ -7,6 +7,7 @@ import "@farcaster/auth-kit/styles.css";
 
 import { SignInButton, useProfile } from "@farcaster/auth-kit";
 
+import icons from "../_assets/icons";
 import GoLiveDropDown from "../Dropdowns/GoLiveDropDown";
 
 const Navbar = () => {

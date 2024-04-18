@@ -12,6 +12,10 @@ const tokenSchema = z.object({
   role: z.enum(["host", "guest"]),
 });
 
+const RecordingSchema = z.object({
+  roomId: z.string(),
+});
+
 export interface RoomDetails {
   message: string;
   data: {
@@ -26,6 +30,17 @@ export interface ILiveMeeting {
 
 export interface ILiveMeetingData {
   liveMeetings: ILiveMeeting[];
+}
+
+export interface IRecordingdata {
+  id: string;
+  url: string;
+  size: number;
+}
+
+export interface IRecordingType {
+  nextcursor: number;
+  recordings: IRecordingdata[];
 }
 
 export const getToken = action(tokenSchema, async ({ roomId, role }) => {
@@ -92,4 +107,53 @@ export const getLiveMeetings = async () => {
   const liveMeetings = data.liveMeetings;
 
   return liveMeetings;
+};
+
+export const genTokenforRecording = action(
+  RecordingSchema,
+  async ({ roomId }) => {
+    if (!roomId) {
+      throw new Error("romid doesn't exist");
+    }
+
+    const accessToken = new AccessToken({
+      apiKey: process.env.API_KEY ?? "",
+      roomId,
+      role: Role.HOST,
+      permissions: {
+        admin: true,
+        canConsume: true,
+        canProduce: true,
+        canProduceSources: {
+          cam: true,
+          mic: true,
+          screen: true,
+        },
+        canRecvData: true,
+        canSendData: true,
+        canUpdateMetadata: true,
+      },
+    });
+
+    const token = accessToken.toJwt();
+
+    return token;
+  },
+);
+
+export const getAllRecordings = async () => {
+  const resp = await fetch("https://api.huddle01.com/api/v1/get-recordings", {
+    method: "GET",
+    headers: {
+      "Content-type": "application/json",
+      "x-api-key": process.env.API_KEY ?? "",
+    },
+    cache: "no-cache",
+  });
+
+  const data = (await resp.json()) as IRecordingType;
+
+  const recordings = data.recordings;
+
+  return recordings;
 };

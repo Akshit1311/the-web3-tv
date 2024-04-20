@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import { useProfile } from "@farcaster/auth-kit";
 import { useDataMessage, useLocalPeer } from "@huddle01/react/hooks";
+import { z } from "zod";
 
 import { cn } from "@acme/ui";
 
@@ -17,24 +19,57 @@ interface ChatProps {
   innerHeight: string;
 }
 
+const ParsedMsgSchema = z.object({
+  text: z.string(),
+  username: z.string(),
+});
+
 const Chat: React.FC<ChatProps> = ({ className, innerHeight }) => {
-  const { peerId: _peerId } = useLocalPeer();
+  const { peerId } = useLocalPeer();
   const [text, setText] = useState<string>("");
-  const [_messages, setMessages] = useState<TMessageType[]>([]);
+  const [messages, setMessages] = useState<TMessageType[]>([]);
+
+  const {
+    profile: { username },
+  } = useProfile();
 
   const { sendData } = useDataMessage({
     onMessage: (payload, from, label) => {
-      if (label === "chat") {
-        setMessages((prev) => [...prev, { message: payload, sender: from }]);
+      try {
+        console.log({ payload, from, label });
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const parsedPayload = JSON.parse(payload);
+        const typedPayload = ParsedMsgSchema.parse(parsedPayload);
+
+        if (label === "chat") {
+          setMessages((prev) => [
+            ...prev,
+            {
+              message: typedPayload.text,
+              sender: typedPayload.username,
+            },
+          ]);
+        }
+      } catch (error) {
+        console.log({ error });
       }
     },
   });
 
   const handleSend = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const payload = JSON.stringify({
+      text,
+      username: username ?? peerId,
+    });
+
+    console.log({ payload });
+
     await sendData({
       to: "*",
-      payload: text,
+      payload,
       label: "chat",
     });
   };
@@ -57,7 +92,7 @@ const Chat: React.FC<ChatProps> = ({ className, innerHeight }) => {
           innerHeight,
         )}
       >
-        {Array.from({ length: 100 }).map((_) => (
+        {/* {Array.from({ length: 100 }).map((_) => (
           <div className="ml-auto flex flex-col justify-end text-sm font-normal">
             <div className="text-right text-gray-500">
               {"message message message message"}
@@ -66,19 +101,21 @@ const Chat: React.FC<ChatProps> = ({ className, innerHeight }) => {
               {"sender"}
             </div>
           </div>
-        ))}
-        {/* {messages.map(({ message, sender }) =>
-          sender === peerId ? (
-            <div className="flex w-fit flex-col items-end rounded-lg bg-red-500 p-1.5 text-sm">
+        ))} */}
+        {messages.map(({ message, sender }) =>
+          sender === username ? (
+            <div className="ml-auto flex w-fit flex-col justify-end text-sm font-normal text-gray-300/80">
               {message}
             </div>
           ) : (
-            <div className="flex w-fit flex-col items-end rounded-lg bg-red-500 p-1.5 text-sm">
-              <div>{message}</div>
-              <div>{sender}</div>
+            <div className="mr-auto flex w-fit items-center justify-end gap-1.5 font-normal text-white">
+              <div className="w-fit truncate font-semibold text-purple-500">
+                {sender}
+              </div>
+              <div className="w-fit rounded-md text-sm ">{message}</div>
             </div>
           ),
-        )} */}
+        )}
       </div>
 
       <div className="mt-2 flex w-full items-center gap-2  border-t p-1.5 backdrop-blur-md">

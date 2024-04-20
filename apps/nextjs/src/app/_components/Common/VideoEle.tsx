@@ -32,11 +32,12 @@ const VideoEle: React.FC<VideoEleProps> = ({ stream }) => {
   }, [stream]);
 
   return (
-    <div className="w-auto">
+    <div className="w-auto flex-1 ">
       <video
         ref={videoRef}
         className="aspect-video w-full rounded-lg"
         autoPlay
+        muted
       />
       <div className="sm:hidden">
         <div className="my-2 text-2xl font-medium">Hi there mofo</div>

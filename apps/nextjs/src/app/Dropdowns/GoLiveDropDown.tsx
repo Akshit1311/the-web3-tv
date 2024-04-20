@@ -37,7 +37,8 @@ const GoLiveDropDown: React.FC = () => {
             <div>{icons.wifi}</div>
             <div>Start stream</div>
           </div>
-
+        </DropdownMenuItem>
+        <DropdownMenuItem className=" flex flex-col items-center gap-y-4">
           <div
             className="flex cursor-pointer items-center gap-2"
             role="presentation"

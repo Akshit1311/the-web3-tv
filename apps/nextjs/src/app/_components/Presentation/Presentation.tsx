@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
-import { usePeerIds } from "@huddle01/react/hooks";
+import React, { useEffect, useRef } from "react";
+import { usePeerIds, useRoom } from "@huddle01/react/hooks";
 
+import { getToken } from "~/app/_actions";
 import Navbar from "../../Navbar/Navbar";
 import Channel from "../Channel";
 import Chat from "../Chat";
@@ -14,9 +15,31 @@ interface Props {
 }
 
 const Presentation: React.FC<Props> = ({ id }) => {
-  const { peerIds } = usePeerIds();
+  const { peerIds } = usePeerIds({
+    roles: ["host"],
+  });
+  const { joinRoom, state } = useRoom({
+    onJoin: () => console.log("Joined room"),
+  });
+
+  const isMounted = useRef(false);
 
   console.log({ id });
+
+  useEffect(() => {
+    const joinStream = async () => {
+      isMounted.current = true;
+
+      const { data } = await getToken({ role: "guest", roomId: id });
+
+      if (!data) return console.error("No data found in token creation");
+
+      await joinRoom({ roomId: id, token: data.token });
+    };
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    !isMounted.current && joinStream();
+  }, []);
 
   return (
     <main className="h-screen w-full px-4 pb-4 sm:px-8">
@@ -24,11 +47,15 @@ const Presentation: React.FC<Props> = ({ id }) => {
         <Navbar />
 
         <div className="flex h-fit w-full flex-1 flex-col gap-4  sm:flex-initial sm:flex-row">
-          {peerIds.map((id) => (
-            <RemoteView key={`remote-peer-${id}`} id={id} />
-          ))}
-
-          <Loader text=" Streaming is starting please wait..." />
+          {state === "connected" && peerIds[0] ? (
+            <>
+              {peerIds.map((id) => (
+                <RemoteView key={`remote-peer-${id}`} id={id} />
+              ))}
+            </>
+          ) : (
+            <Loader text=" Streaming is starting please wait..." />
+          )}
 
           <Chat className="h-[calc(50vh)]" innerHeight="h-[78.9%]" />
         </div>

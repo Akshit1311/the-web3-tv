@@ -16,6 +16,8 @@ interface Props {
 const Presentation: React.FC<Props> = ({ id }) => {
   const { peerIds } = usePeerIds();
 
+  console.log({ id });
+
   return (
     <main className="h-screen w-full px-4 pb-4 sm:px-8">
       <div className="flex h-full flex-col items-center justify-start gap-4">

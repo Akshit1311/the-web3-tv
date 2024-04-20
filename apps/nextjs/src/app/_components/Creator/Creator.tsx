@@ -3,14 +3,14 @@
 import React, { Suspense, useCallback, useState } from "react";
 import dynamic from "next/dynamic";
 import { useProfile } from "@farcaster/auth-kit";
-import { useLocalVideo, useRoom } from "@huddle01/react/hooks";
+import { useLocalVideo } from "@huddle01/react/hooks";
 import { z } from "zod";
 
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 
 import { genTokenforRecording, getToken } from "~/app/_actions";
-import { startRecording } from "~/app/_recorder";
+// import { startRecording } from "~/app/_recorder";
 import Navbar from "../../Navbar/Navbar";
 import Loader from "../Common/Loader";
 import VideoEle from "../Common/VideoEle";
@@ -47,17 +47,17 @@ const Creator: React.FC = () => {
 
   const { stream, enableVideo, disableVideo, isVideoOn } = useLocalVideo();
 
-  const { joinRoom } = useRoom();
+  // const { joinRoom } = useRoom();
 
   // Handlers
   const handleEnableVideo = async () => {
-    await enableVideo().catch((error) => {
+    await enableVideo().catch((error: Error) => {
       console.error({ error });
     });
   };
 
   const handleDisableVideo = async () => {
-    await disableVideo().catch((err) => {
+    await disableVideo().catch((err: Error) => {
       console.error({ err });
     });
   };
@@ -78,7 +78,7 @@ const Creator: React.FC = () => {
       ...prev,
       isModalOpen: false,
     }));
-  }, [streamData]);
+  }, [streamData, setStreamData]);
 
   const handleSave = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -93,8 +93,8 @@ const Creator: React.FC = () => {
       throw new Error("Token creation failed");
     }
 
-    const { data: recData } = await genTokenforRecording({
-      roomId: data?.roomId,
+    const { data: _recData } = await genTokenforRecording({
+      roomId: data.roomId,
     });
 
     console.log(data);

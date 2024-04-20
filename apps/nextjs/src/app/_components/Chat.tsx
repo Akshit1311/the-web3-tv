@@ -18,9 +18,9 @@ interface ChatProps {
 }
 
 const Chat: React.FC<ChatProps> = ({ className, innerHeight }) => {
-  const { peerId } = useLocalPeer();
+  const { peerId: _peerId } = useLocalPeer();
   const [text, setText] = useState<string>("");
-  const [messages, setMessages] = useState<TMessageType[]>([]);
+  const [_messages, setMessages] = useState<TMessageType[]>([]);
 
   const { sendData } = useDataMessage({
     onMessage: (payload, from, label) => {
@@ -57,7 +57,7 @@ const Chat: React.FC<ChatProps> = ({ className, innerHeight }) => {
           innerHeight,
         )}
       >
-        {Array.from({ length: 100 }).map((_, i) => (
+        {Array.from({ length: 100 }).map((_) => (
           <div className="ml-auto flex flex-col justify-end text-sm font-normal">
             <div className="text-right text-gray-500">
               {"message message message message"}

@@ -5,7 +5,9 @@ import { AccessToken, Role } from "@huddle01/server-sdk/auth";
 import { createSafeActionClient } from "next-safe-action";
 import { z } from "zod";
 
-export const action = createSafeActionClient();
+import { env } from "~/env";
+
+const action = createSafeActionClient();
 
 const tokenSchema = z.object({
   roomId: z.string().optional(),
@@ -117,7 +119,7 @@ export const genTokenforRecording = action(
     }
 
     const accessToken = new AccessToken({
-      apiKey: process.env.API_KEY ?? "",
+      apiKey: env.API_KEY,
       roomId,
       role: Role.HOST,
       permissions: {
@@ -133,9 +135,14 @@ export const genTokenforRecording = action(
         canSendData: true,
         canUpdateMetadata: true,
       },
+      options: {
+        metadata: {
+          test: "true",
+        },
+      },
     });
 
-    const token = accessToken.toJwt();
+    const token = await accessToken.toJwt();
 
     return token;
   },

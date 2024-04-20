@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 import "@farcaster/auth-kit/styles.css";
@@ -8,15 +8,19 @@ import "@farcaster/auth-kit/styles.css";
 import { useRouter } from "next/navigation";
 import { SignInButton, useProfile } from "@farcaster/auth-kit";
 
+import { useSetOwnerAtom } from "../_atom/owner.atom";
+import { useGetAddress } from "../_hooks";
 import GoLiveDropDown from "../Dropdowns/GoLiveDropDown";
 
 const Navbar = () => {
   const {
     isAuthenticated,
-    profile: { displayName },
+    profile: { username, displayName },
   } = useProfile();
 
   const router = useRouter();
+
+  const setOwnerName = useSetOwnerAtom();
 
   return (
     <div className="h-50 sticky top-0 flex w-full items-center justify-between border-b pb-3 pt-4">
@@ -36,8 +40,13 @@ const Navbar = () => {
           <div>{displayName}</div>
         ) : (
           <SignInButton
-            onSuccess={({ displayName, bio, fid }) => {
-              console.log(displayName, bio, fid);
+            onSuccess={({ username, fid, nonce }) => {
+              console.log("username", username, nonce);
+              setOwnerName({
+                username,
+                fid,
+                nonce,
+              });
             }}
           />
         )}

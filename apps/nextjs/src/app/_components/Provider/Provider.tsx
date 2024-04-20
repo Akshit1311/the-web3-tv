@@ -5,6 +5,7 @@ import { HuddleClient, HuddleProvider } from "@huddle01/react";
 
 import { farcasterConfig } from "~/app/_config/config";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 interface ProviderProps {
 	children: React.ReactNode;
 }
@@ -24,6 +25,7 @@ const Provider: React.FC<ProviderProps> = ({ children }) => {
 			<AuthKitProvider config={farcasterConfig}>
 				<HuddleProvider client={huddleClient}>{children}</HuddleProvider>
 			</AuthKitProvider>
+			<ReactQueryDevtools />
 		</QueryClientProvider>
 	);
 };

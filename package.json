@@ -16,17 +16,17 @@
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo clean",
-    "db:push": "pnpm -F db push",
-    "db:studio": "pnpm -F db studio",
+    "db:push": "bun -F db push",
+    "db:studio": "bun -F db studio",
     "dev": "turbo dev --parallel",
     "format": "turbo format --continue -- --cache --cache-location node_modules/.cache/.prettiercache",
     "format:fix": "turbo format --continue -- --write --cache --cache-location node_modules/.cache/.prettiercache",
     "lint": "turbo lint --continue -- --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:fix": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
-    "lint:ws": "pnpm dlx sherif@latest",
-    "postinstall": "pnpm lint:ws",
+    "lint:ws": "bunx sherif@latest",
+    "postinstall": "bun run lint:ws",
     "typecheck": "turbo typecheck",
-    "ui-add": "pnpm -F ui ui-add"
+    "ui-add": "bun -F ui ui-add"
   },
   "workspaces": [
     "apps/*",

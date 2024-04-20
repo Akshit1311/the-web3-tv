@@ -21,7 +21,7 @@ const Home: React.FC<HomeProps> = ({ liveMeetings }) => {
   const router = useRouter();
 
   // handlers
-  const handleJoinStream = async (roomId: string) => {
+  const _handleJoinStream = async (roomId: string) => {
     const { data } = await getToken({ role: "guest", roomId });
 
     if (!data) {

@@ -1,8 +1,6 @@
 import Navbar from "~/app/Navbar/Navbar";
 
-interface StreamProps {}
-
-const Stream: React.FC<StreamProps> = () => {
+const Stream: React.FC = () => {
 	return (
 		<section className="relative h-full">
 			<Navbar />

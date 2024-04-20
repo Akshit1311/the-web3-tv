@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Suspense, useCallback, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useProfile } from "@farcaster/auth-kit";
 import { useLocalVideo, useRoom } from "@huddle01/react/hooks";
@@ -42,6 +42,12 @@ const Creator: React.FC = () => {
     streamUrl: "",
     isOpen: true,
   };
+
+  const [origin, setOrigin] = useState("");
+
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
 
   const [isLoading, setIsLoading] = useState(false);
   const [streamData, setStreamData] = useState<TStreamType>(streamMap);
@@ -249,7 +255,7 @@ const Creator: React.FC = () => {
                 Stream URL
               </div>
               <input
-                value={`${window.location.origin}/live/${room.roomId}`}
+                value={`${origin}/live/${room.roomId}`}
                 type="text"
                 name="streamUrl"
                 className="w-1/2 border-b border-white bg-transparent p-1 text-sm font-normal text-white focus:outline-none"

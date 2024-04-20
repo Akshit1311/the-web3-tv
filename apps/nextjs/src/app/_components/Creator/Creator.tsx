@@ -9,7 +9,7 @@ import { z } from "zod";
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 
-import { genTokenforRecording, getToken } from "~/app/_actions";
+import { createRoom, genTokenforRecording, getToken } from "~/app/_actions";
 // import { startRecording } from "~/app/_recorder";
 import Navbar from "../../Navbar/Navbar";
 import Loader from "../Common/Loader";
@@ -19,7 +19,7 @@ import CreatorChat from "./CreatorChat";
 const EditModal = dynamic(() => import("./EditModal"));
 
 const streamSchema = z.object({
-  title: z.string().optional(),
+  title: z.string(),
   desc: z.string(),
   isModalOpen: z.boolean(),
   streamKey: z.string(),
@@ -31,12 +31,12 @@ export type TStreamType = z.infer<typeof streamSchema>;
 
 const Creator: React.FC = () => {
   const {
-    profile: { displayName },
+    profile: { displayName, pfpUrl },
   } = useProfile();
 
   const streamMap: TStreamType = {
-    title: displayName ?? "Harry",
-    desc: "",
+    title: `${displayName ?? "Harry"} Stream`,
+    desc: "This is a test stream",
     isModalOpen: false,
     streamKey: "qh69-4azq-g1y0-jb2z-a10m",
     streamUrl: "",
@@ -94,19 +94,30 @@ const Creator: React.FC = () => {
   const handleJoinRoom = async () => {
     setIsLoading(true);
 
-    const { data } = await getToken({ role: "host" });
+    const roomData = await createRoom({
+      title: streamData.title,
+      desc: streamData.desc,
+      avatar: pfpUrl ?? "",
+    });
+
+    if (!roomData.data?.roomId) return console.error("Room creation failed");
+
+    const { data } = await getToken({
+      role: "host",
+      roomId: roomData.data.roomId,
+    });
 
     if (!data) {
       throw new Error("Token creation failed");
     }
 
     const { data: _recData } = await genTokenforRecording({
-      roomId: data.roomId,
+      roomId: roomData.data.roomId,
     });
 
     console.log(data);
     await joinRoom({
-      roomId: data.roomId,
+      roomId: roomData.data.roomId,
       token: data.token,
     });
 
@@ -175,13 +186,13 @@ const Creator: React.FC = () => {
               <TitleStrip
                 className="mt-4"
                 title="Title"
-                subtitle={`${streamData.title} Live Stream`}
+                subtitle={streamData.title}
               />
 
               <TitleStrip
                 className="my-4"
-                title="Category"
-                subtitle="People & Blogs"
+                title="Description"
+                subtitle={streamData.desc}
               />
 
               <TitleStrip title="Privacy" subtitle="Public" />

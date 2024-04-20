@@ -10,8 +10,13 @@ import { env } from "~/env";
 const action = createSafeActionClient();
 
 const tokenSchema = z.object({
-  roomId: z.string().optional(),
+  roomId: z.string(),
   role: z.enum(["host", "guest"]),
+});
+const createRoomSchema = z.object({
+  title: z.string(),
+  avatar: z.string(),
+  desc: z.string(),
 });
 
 const RecordingSchema = z.object({
@@ -45,16 +50,18 @@ export interface IRecordingType {
   recordings: IRecordingdata[];
 }
 
-export const getToken = action(tokenSchema, async ({ roomId, role }) => {
-  revalidatePath("/creator");
-
-  let finalRoomId = roomId;
-
-  if (role === "host") {
+export const createRoom = action(
+  createRoomSchema,
+  async ({ desc, title, avatar }) => {
     const res = await fetch("https://api.huddle01.com/api/v1/create-room", {
       method: "POST",
       body: JSON.stringify({
-        title: "Huddle01 Room",
+        title,
+        appData: {
+          title,
+          desc,
+          avatar,
+        },
       }),
       headers: {
         "Content-type": "application/json",
@@ -63,17 +70,19 @@ export const getToken = action(tokenSchema, async ({ roomId, role }) => {
       cache: "no-cache",
     });
 
-    const data = (await res.json()) as RoomDetails;
+    const { data } = (await res.json()) as RoomDetails;
 
-    finalRoomId = data.data.roomId;
-  }
+    return data;
+  },
+);
 
-  if (!finalRoomId) throw new Error("Error in room creation");
+export const getToken = action(tokenSchema, async ({ roomId, role }) => {
+  revalidatePath("/creator");
 
   const accessToken = new AccessToken({
     apiKey: process.env.API_KEY ?? "",
-    roomId: finalRoomId,
-    role: Role.HOST,
+    roomId: roomId,
+    role: role,
     permissions: {
       admin: true,
       canConsume: true,
@@ -90,7 +99,7 @@ export const getToken = action(tokenSchema, async ({ roomId, role }) => {
   });
 
   const token = await accessToken.toJwt();
-  return { token, roomId: finalRoomId };
+  return { token };
 });
 
 export const getLiveMeetings = async () => {

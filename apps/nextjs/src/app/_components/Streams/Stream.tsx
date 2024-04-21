@@ -1,5 +1,3 @@
-import React from "react";
-
 import Navbar from "~/app/Navbar/Navbar";
 
 const Stream: React.FC = () => {

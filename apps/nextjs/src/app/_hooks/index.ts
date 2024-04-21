@@ -1,1 +1,1 @@
-export * from "./useCustomHook";
+export * from "./useGetAddress";

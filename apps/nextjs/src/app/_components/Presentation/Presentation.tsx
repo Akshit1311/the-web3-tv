@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import { useProfile } from "@farcaster/auth-kit";
 import { usePeerIds, useRoom } from "@huddle01/react/hooks";
 
 import { getToken } from "~/app/_actions";
+import { useGetAddress } from "~/app/_hooks";
 import Navbar from "../../Navbar/Navbar";
 import Channel from "../Channel";
 import Chat from "../Chat";
@@ -15,6 +17,11 @@ interface Props {
 }
 
 const Presentation: React.FC<Props> = ({ id }) => {
+  const {
+    profile: { username },
+  } = useProfile();
+  const { data } = useGetAddress({ displayName: username ?? "" });
+  console.log("data", data);
   const { peerIds } = usePeerIds({
     roles: ["host"],
   });

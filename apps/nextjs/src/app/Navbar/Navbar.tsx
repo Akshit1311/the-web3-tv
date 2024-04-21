@@ -36,8 +36,8 @@ const Navbar = () => {
           <div>{displayName}</div>
         ) : (
           <SignInButton
-            onSuccess={({ displayName, bio, fid }) => {
-              console.log(displayName, bio, fid);
+            onSuccess={(data) => {
+              console.log({ data });
             }}
           />
         )}

@@ -21,21 +21,16 @@ const TransferSchema = z.object({
 
 export const useGetAddress = ({ displayName }: getAddressProps) => {
   const fetchAddress = async () => {
-    try {
-      const data = await axios.get(
-        `https://fnames.farcaster.xyz/transfers/current?name=${displayName}`,
-      );
+    const data = await axios.get(
+      `https://fnames.farcaster.xyz/transfers/current?name=${displayName}`,
+    );
 
-      return TransferSchema.parse(data.data);
-    } catch (error) {
-      throw error;
-    }
+    return TransferSchema.parse(data.data);
   };
-  const { data, error, isLoading, refetch } = useQuery({
+  return useQuery({
     queryKey: ["getAddress"],
     queryFn: fetchAddress,
     enabled: !!displayName,
     retry: 1,
   });
-  return { data, error, isLoading };
 };

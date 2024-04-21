@@ -1,33 +1,37 @@
-import React from "react";
+"use client";
 
-import { Skeleton } from "@acme/ui/skeleton";
+import React from "react";
+import { useRouter } from "next/navigation";
 
 interface VideoContentProps {
-  onClick: () => void;
+  title: string;
+  roomId: string;
 }
 
-const VideoContent: React.FC<VideoContentProps> = ({ onClick }) => {
+const VideoContent: React.FC<VideoContentProps> = ({ roomId, title }) => {
+  const router = useRouter();
+
   return (
     <div
       className="w-full cursor-pointer"
       role="presentation"
-      onClick={onClick}
+      onClick={() => router.push(`/live/${roomId}`)}
     >
-      <Skeleton className="aspect-video bg-zinc-800" />
+      <div className="aspect-video bg-zinc-800" />
       <div className="my-2 flex gap-1">
-        <Skeleton className="aspect-square h-12 rounded-full bg-zinc-800" />
-        <div className="flex w-full flex-col gap-2">
-          <Skeleton className="w-full bg-zinc-800 text-lg">
-            <span className="invisible">Title</span>
-          </Skeleton>
-          <Skeleton className="w-full bg-zinc-800 text-xs">
-            <span className="invisible">Description</span>
-          </Skeleton>
-          <Skeleton className="w-full bg-zinc-800 text-xs">
+        {/* <div className="aspect-square h-12 rounded-full bg-zinc-800" /> */}
+        <div className="flex w-full items-center gap-2">
+          <div className="w-full text-lg text-zinc-500">
+            <span className="">{title}</span>
+          </div>
+          {/* <div className="w-full text-xs text-zinc-500">
+            <span className="">Description</span>
+          </div> */}
+          {/* <div className="w-full bg-zinc-800 text-xs">
             <span className="invisible">988 watching</span>
-          </Skeleton>
+          </div> */}
 
-          <div className="flex w-fit items-center gap-1 rounded-sm bg-red-500 px-1  text-xs font-medium text-white">
+          <div className="flex h-fit w-fit items-center gap-1 rounded-sm bg-red-500 px-1  text-xs font-medium text-white">
             <span className="h-2 w-2 rounded-full bg-white"></span>
             Live
           </div>
